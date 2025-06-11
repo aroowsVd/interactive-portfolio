@@ -15,7 +15,7 @@ function Dancer() {
       <ambientLight intensity={2} />
     </>
   ) : (
-    <Loader />
+    <Loader isComplete />
   );
 }
 
