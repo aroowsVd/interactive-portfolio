@@ -1,4 +1,4 @@
-import { Html, useProgress } from "@react-three/drei";
+import { Html, Points, useProgress } from "@react-three/drei";
 import { useLoaderStore } from "../stores/loading";
 import styled, { keyframes } from "styled-components";
 
@@ -10,18 +10,29 @@ function Loader({ isComplete }) {
 
   return !isEntered && (
     <Html center>
-      <Spinner0>
-        <Spinner1>
-          <Progress>
-            {isComplete ? 100 : progress.progress}%
-          </Progress>
-        </Spinner1>
-      </Spinner0>
+      <LoadingWrapper>
+        <Spinner0>
+          <Spinner1>
+          </Spinner1>
+        </Spinner0>
+        <Fprogress>{isComplete ? 100 : progress.progress}%</Fprogress>
+        <ButtonW $isComplete={ isComplete }>
+          <button onClick={() => setIsEntered()}>
+            Enter
+          </button>
+        </ButtonW>
+      </LoadingWrapper>
     </Html>
   );
 }
 
 export default Loader;
+
+const LoadingWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+`;
 
 const spinning = keyframes`
   to {
@@ -47,8 +58,61 @@ const Spinner1 = styled.div`
   filter: blur(10px);
 `;
 
-const Progress = styled.span`
+const Fprogress = styled.span`
   color: #fff;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
-
+const ButtonW = styled.div.attrs(() => ({}))`
+  position: absolute;
+  top: calc(100% + 30px);
+  opacity: ${(props) => (props.$isComplete ? 1 : 0)};
+  pointer-events: ${(props) => (props.$isComplete ? 'auto' : 'none')};
+  transition: opacity 0.6s ease-in-out;
+  button {
+    position: relative;
+    width: 8em;
+    height: 3em;
+    border: 3px ridge rgb(0, 255, 255);
+    outline: none;
+    background-color: transparent;
+    color: white;
+    transition: 0.5s;
+    border-radius: 0.3em;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    &::after {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 5%;
+      width: 90%;
+      height: 40%;
+      background-color: #000;
+      transition: 0.3s;
+      transform-origin: center;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 80%;
+      left: 5%;
+      width: 90%;
+      height: 40%;
+      background-color: #000;
+      transition: 0.3s;
+      transform-origin: center;
+    }
+    &:hover::before, &:hover::after {
+      transform: scale(0)
+    }
+    &:hover {
+      box-shadow: inset 0px 0px 25px rgb(0, 255, 255);
+    }
+  }
+`;

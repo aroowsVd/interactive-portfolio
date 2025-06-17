@@ -2,9 +2,14 @@ import { ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import Dancer from "./Dancer";
+import { Suspense } from "react";
+import Loader from "./Loader";
+import { useLoaderStore } from "../stores/loading";
 
 function MainCanvas() {
   const aspectRatio = window.innerWidth / window.innerHeight;
+
+  const { isEntered } = useLoaderStore();
 
   return (
     <>
@@ -21,8 +26,10 @@ function MainCanvas() {
         }}
         scene={{ background: new THREE.Color(0x000000) }}
       >
-        <ScrollControls pages={8} damping={0.25}>
-          <Dancer />
+        <ScrollControls pages={isEntered ? 8 : 0} damping={0.25}>
+          <Suspense fallback={<Loader />}>
+            <Dancer />
+          </Suspense>
         </ScrollControls>
       </Canvas>
     </>
