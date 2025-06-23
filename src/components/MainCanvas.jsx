@@ -7,8 +7,6 @@ import Loader from "./Loader";
 import { useLoaderStore } from "../stores/loading";
 
 function MainCanvas() {
-  const aspectRatio = window.innerWidth / window.innerHeight;
-
   const { isEntered } = useLoaderStore();
 
   return (
@@ -19,7 +17,6 @@ function MainCanvas() {
         shadows="pcfsoft"
         camera={{
           fov: 30,
-          aspect: aspectRatio,
           near: 0.01,
           far: 1000,
           position: [0, 6, 12]
